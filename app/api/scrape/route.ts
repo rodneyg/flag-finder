@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     }
 
     // Get access token from cookies
-    const cookieStore = await cookies(); // Await the promise to get ReadonlyRequestCookies
+    const cookieStore = await cookies();
     const accessToken = cookieStore.get('instagram_access_token')?.value;
 
     if (!accessToken) {
@@ -94,6 +94,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ profile1: profile1Data, profile2: profile2Data }, { status: 200 });
   } catch (error) {
     console.error('Error fetching Instagram data:', error);
-    return NextResponse.json({ error: 'Failed to fetch Instagram data', details: error.message }, { status: 500 });
+    // Use a type guard to safely access error.message
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    return NextResponse.json({ error: 'Failed to fetch Instagram data', details: errorMessage }, { status: 500 });
   }
 }
