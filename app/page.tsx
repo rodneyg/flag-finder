@@ -52,7 +52,7 @@ export default function Home() {
       }, 12000);
       return () => clearInterval(interval);
     }
-  }, [loading, messages.length]); // Added messages.length to dependency array
+  }, [loading, messages.length]);
 
   useEffect(() => {
     if (loading) {
@@ -140,12 +140,13 @@ export default function Home() {
         router.replace(`/results?id=${docRef.id}`);
       }, 1000);
     } catch (err) {
-      if (err.name === 'AbortError') {
+      if (err instanceof Error && err.name === 'AbortError') {
         console.log('Scraping aborted by user or timeout');
         setError('Analysis stopped.');
       } else {
         console.error('Error in handleSubmit:', err);
-        setError(err.message || 'An error occurred while fetching profile data.');
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        setError(errorMessage || 'An error occurred while fetching profile data.');
       }
     } finally {
       if (!fadeOut) {
