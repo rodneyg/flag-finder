@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss';
+import type { Config } from 'tailwindcss/types/config'; // Correct import path for Config type
 import daisyui from 'daisyui';
 
 // Extend the Config type to include daisyui
