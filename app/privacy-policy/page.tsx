@@ -5,14 +5,14 @@ export default function PrivacyPolicy() {
           <h1 className="text-3xl font-bold text-blue-600 text-center">Privacy Policy</h1>
           <p className="text-gray-600">Last updated: March 20, 2025</p>
           <p className="text-gray-600">
-            FlagFinder ("we", "us", or "our") operates the FlagFinder app, which uses the Instagram Basic Display API to fetch user profile data and media to predict relationship compatibility. This Privacy Policy explains how we collect, use, and protect your information.
+            FlagFinder (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) operates the FlagFinder app, which uses the Instagram Basic Display API to fetch user profile data and media to predict relationship compatibility. This Privacy Policy explains how we collect, use, and protect your information.
           </p>
           <h2 className="text-xl font-semibold text-gray-800">1. Information We Collect</h2>
           <p className="text-gray-600">
             We collect the following information when you use our app:
-            - **Instagram Data**: When you log in with Instagram, we collect your username, follower count, and recent posts (up to 3 posts) via the Instagram Basic Display API.
-            - **User Input**: Your email address and the Instagram usernames you provide.
-            - **Cookies**: We use cookies to store your Instagram access token for authentication purposes.
+            - <strong>Instagram Data</strong>: When you log in with Instagram, we collect your username, follower count, and recent posts (up to 3 posts) via the Instagram Basic Display API.
+            - <strong>User Input</strong>: Your email address and the Instagram usernames you provide.
+            - <strong>Cookies</strong>: We use cookies to store your Instagram access token for authentication purposes.
           </p>
           <h2 className="text-xl font-semibold text-gray-800">2. How We Use Your Information</h2>
           <p className="text-gray-600">
@@ -24,8 +24,8 @@ export default function PrivacyPolicy() {
           <h2 className="text-xl font-semibold text-gray-800">3. Third-Party Sharing</h2>
           <p className="text-gray-600">
             We share your data with:
-            - **Instagram (Meta)**: To fetch your profile data via the Instagram Basic Display API.
-            - **Firebase**: To store your analysis data (usernames, email, and scraped data).
+            - <strong>Instagram (Meta)</strong>: To fetch your profile data via the Instagram Basic Display API.
+            - <strong>Firebase</strong>: To store your analysis data (usernames, email, and scraped data).
             We do not share your data with other third parties for marketing or advertising purposes.
           </p>
           <h2 className="text-xl font-semibold text-gray-800">4. User Control</h2>

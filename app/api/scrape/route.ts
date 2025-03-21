@@ -9,6 +9,13 @@ interface InstagramProfileData {
   profilePic: string;
 }
 
+// Define interface for Instagram media data
+interface InstagramMedia {
+  media_url: string;
+  caption?: string;
+  timestamp: string;
+}
+
 export async function POST(request: Request) {
   try {
     // Get parameters from JSON body
@@ -65,7 +72,7 @@ export async function POST(request: Request) {
         throw new Error(`Failed to fetch media for ${username}`);
       }
 
-      const posts = mediaData.data.map((post: any) => ({
+      const posts = mediaData.data.map((post: InstagramMedia) => ({
         src: post.media_url,
         alt: post.caption || '',
       }));
@@ -73,8 +80,8 @@ export async function POST(request: Request) {
       return {
         followers: profileData.followers_count || '0',
         posts,
-        bio: '', // Instagram Basic Display API doesn't provide bio
-        profilePic: '', // Instagram Basic Display API doesn't provide profile picture
+        bio: '',
+        profilePic: '',
       };
     };
 

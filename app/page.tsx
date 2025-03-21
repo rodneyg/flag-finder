@@ -52,7 +52,7 @@ export default function Home() {
       }, 12000);
       return () => clearInterval(interval);
     }
-  }, [loading]);
+  }, [loading, messages.length]); // Added messages.length to dependency array
 
   useEffect(() => {
     if (loading) {

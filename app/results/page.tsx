@@ -3,13 +3,32 @@
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { db } from './../lib/firebase';
+import { db } from '../../lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
+
+// Define interface for the analysis data
+interface AnalysisData {
+  platform: string;
+  profile1: string;
+  profile2: string;
+  profile1Data: {
+    followers: string;
+    posts: Array<{ src: string; alt: string }>;
+    bio: string;
+    profilePic: string;
+  };
+  profile2Data: {
+    followers: string;
+    posts: Array<{ src: string; alt: string }>;
+    bio: string;
+    profilePic: string;
+  };
+}
 
 export default function Results() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<AnalysisData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -26,11 +45,11 @@ export default function Results() {
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
-          setData(docSnap.data());
+          setData(docSnap.data() as AnalysisData);
         } else {
           setError('Analysis not found');
         }
-      } catch (err) {
+      } catch {
         setError('Failed to load results');
       } finally {
         setLoading(false);
