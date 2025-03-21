@@ -11,6 +11,9 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+// Debug environment variables
+console.log('Firebase Config:', firebaseConfig);
+
 // Validate that all required environment variables are set
 if (!firebaseConfig.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId || !firebaseConfig.storageBucket || !firebaseConfig.messagingSenderId || !firebaseConfig.appId) {
   throw new Error("Missing Firebase environment variables. Please check your .env.local or Vercel environment settings.");
