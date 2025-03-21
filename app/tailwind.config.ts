@@ -1,14 +1,6 @@
-import type { Config } from 'tailwindcss/types/config'; // Correct import path for Config type
 import daisyui from 'daisyui';
 
-// Extend the Config type to include daisyui
-interface CustomConfig extends Config {
-  daisyui?: {
-    themes: string[];
-  };
-}
-
-const config: CustomConfig = {
+const config = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
