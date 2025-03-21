@@ -33,7 +33,7 @@ export async function POST(request: Request) {
     }
 
     // Get access token from cookies
-    const cookieStore = cookies();
+    const cookieStore = await cookies(); // Await the promise to get ReadonlyRequestCookies
     const accessToken = cookieStore.get('instagram_access_token')?.value;
 
     if (!accessToken) {
