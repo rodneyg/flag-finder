@@ -50,7 +50,7 @@ function ResultsContent() {
         } else {
           setError('Analysis not found');
         }
-      } catch (_) {
+      } catch {
         setError('Failed to load results');
       } finally {
         setLoading(false);
