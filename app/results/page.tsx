@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { db } from '../../lib/firebase';
+import { db } from './../lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 // Define interface for the analysis data
