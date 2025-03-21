@@ -2,21 +2,77 @@
 
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { db } from './../lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 export default function Results() {
   const searchParams = useSearchParams();
-  const platform = searchParams.get('platform') || 'unknown';
-  const profile1 = searchParams.get('profile1') || 'unknown';
-  const profile2 = searchParams.get('profile2') || 'unknown';
+  const id = searchParams.get('id');
+  const [data, setData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!id) {
+        setError('Missing analysis ID');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const docRef = doc(db, 'analyses', id);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setData(docSnap.data());
+        } else {
+          setError('Analysis not found');
+        }
+      } catch (err) {
+        setError('Failed to load results');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-gray-100 p-4">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-gray-100 p-4">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-gray-100 p-4">
+        <p className="text-gray-600">No data available</p>
+      </div>
+    );
+  }
+
+  const { platform, profile1, profile2, profile1Data, profile2Data } = data;
+  const compatibilityScore = 75; // Static for now, will be dynamic later
+  const scoreColor = compatibilityScore >= 70 ? 'text-green-500' : compatibilityScore >= 40 ? 'text-yellow-500' : 'text-red-500';
 
   const getProfileLink = (username: string) => {
     const baseUrl = platform === 'instagram' ? 'https://instagram.com' : 'https://twitter.com';
     const cleanUsername = username.startsWith('@') ? username.replace('@', '') : username;
     return `${baseUrl}/${cleanUsername}`;
   };
-
-  const compatibilityScore = 75; // Static for now, will be dynamic later
-  const scoreColor = compatibilityScore >= 70 ? 'text-green-500' : compatibilityScore >= 40 ? 'text-yellow-500' : 'text-red-500';
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-100 to-gray-100 p-4">
@@ -29,9 +85,8 @@ export default function Results() {
           </p>
           <p className="text-gray-700 mt-2">Looks like you’re active and friendly online!</p>
           <ul className="list-disc list-inside text-gray-600 mt-2 space-y-1">
-            <li>Posts regularly and gets good engagement.</li>
-            <li>Shares positive and respectful content.</li>
-            <li>No red flags found—great job!</li>
+            <li>Recent posts: {profile1Data.posts.length}</li>
+            <li>Followers: {profile1Data.followers}</li>
           </ul>
         </div>
         <div className="bg-gray-50 p-4 rounded-xl">
@@ -41,9 +96,8 @@ export default function Results() {
           </p>
           <p className="text-gray-700 mt-2">They’re active but might be a bit casual.</p>
           <ul className="list-disc list-inside text-gray-600 mt-2 space-y-1">
-            <li>Posts often, but engagement varies.</li>
-            <li>Some posts have a casual or flirty vibe.</li>
-            <li>Minor red flag: Watch for consistency in tone.</li>
+            <li>Recent posts: {profile2Data.posts.length}</li>
+            <li>Followers: {profile2Data.followers}</li>
           </ul>
         </div>
         <div className="bg-blue-50 p-4 rounded-xl text-center">
@@ -54,7 +108,10 @@ export default function Results() {
         <div className="text-sm text-gray-500">
           <p><strong>Disclaimer:</strong> These insights are based on public data and are for informational purposes only. They’re not a final judgment of someone’s character. Always trust your own experiences and how they treat you in real life.</p>
         </div>
-        <Link href="/" className="btn btn-primary w-full text-base text-white bg-blue-600 hover:bg-blue-700 rounded-xl py-3 px-6 shadow-md hover:shadow-lg transition-shadow">
+        <Link href="/payment" className="btn btn-primary w-full text-base text-white bg-blue-600 hover:bg-blue-700 rounded-xl py-2 shadow-md hover:shadow-lg transition-shadow">
+          Upgrade for Deeper Insights
+        </Link>
+        <Link href="/" className="btn btn-primary w-full text-base text-white bg-blue-600 hover:bg-blue-700 rounded-xl py-2 shadow-md hover:shadow-lg transition-shadow">
           Analyze Another Pair
         </Link>
       </div>
