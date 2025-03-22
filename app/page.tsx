@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { db } from './lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import { cookies } from 'next/headers';
 
 export default function Home() {
   const router = useRouter();
@@ -117,22 +116,18 @@ export default function Home() {
 
       console.log('API response data:', data);
 
-      // Get the Instagram user ID from cookies
-      const cookieStore = await cookies();
-      const instagramUserId = cookieStore.get('instagram_user_id')?.value;
-
       console.log('Storing data in Firebase...');
       const docRef = await addDoc(collection(db, 'analyses'), {
         platform,
         profile1,
         profile2,
         email,
-        profile1Data: { ...data.profile1, instagramUserId }, // Store the Instagram user ID
+        profile1Data: data.profile1, // Instagram user ID is included in profile1Data
         profile2Data: data.profile2,
         timestamp: new Date(),
-      }).catch(err => {
-        console.error('Firebase addDoc error:', err);
-        throw new Error('Failed to store data in Firebase: ' + err.message);
+      }).catch(error => {
+        console.error('Firebase addDoc error:', error);
+        throw new Error('Failed to store data in Firebase: ' + error.message);
       });
 
       console.log('Firebase document created with ID:', docRef.id);

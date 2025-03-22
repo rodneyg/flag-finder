@@ -7,6 +7,7 @@ interface InstagramProfileData {
   posts: Array<{ src: string; alt: string }>;
   bio: string;
   profilePic: string;
+  instagramUserId?: string; // Add instagramUserId to the profile data
 }
 
 // Define interface for Instagram media data
@@ -35,6 +36,7 @@ export async function POST(request: Request) {
     // Get access token from cookies
     const cookieStore = await cookies();
     const accessToken = cookieStore.get('instagram_access_token')?.value;
+    const instagramUserId = cookieStore.get('instagram_user_id')?.value;
 
     if (!accessToken) {
       console.log('Access token missing, user needs to authenticate');
@@ -82,6 +84,7 @@ export async function POST(request: Request) {
         posts,
         bio: '',
         profilePic: '',
+        instagramUserId: username === profile1 ? instagramUserId : undefined, // Include instagramUserId only for profile1
       };
     };
 
@@ -94,7 +97,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ profile1: profile1Data, profile2: profile2Data }, { status: 200 });
   } catch (error) {
     console.error('Error fetching Instagram data:', error);
-    // Use a type guard to safely access error.message
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json({ error: 'Failed to fetch Instagram data', details: errorMessage }, { status: 500 });
   }
