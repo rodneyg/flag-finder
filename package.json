@@ -11,7 +11,7 @@
   "dependencies": {
     "daisyui": "^5.0.9",
     "firebase": "^11.5.0",
-    "next": "15.2.3",
+    "next": "15.5.29",
     "puppeteer": "^24.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -24,7 +24,7 @@
     "@types/react-dom": "^19",
     "@types/tailwindcss": "^3.0.11",
     "eslint": "^9",
-    "eslint-config-next": "15.2.3",
+    "eslint-config-next": "15.5.29",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
