@@ -30,7 +30,7 @@ export default function PrivacyPolicy() {
           </p>
           <h2 className="text-xl font-semibold text-gray-800">4. User Control</h2>
           <p className="text-gray-600">
-            You can revoke our access to your Instagram data at any time through your Instagram account settings. To delete your data from our app, please contact us at support@flagfinder.app.
+            You can revoke our access to your Instagram data at any time through your Instagram account settings. To request deletion of data from our app, open an issue at https://github.com/rodneyg/flag-finder/issues and ask for a private contact method. Do not include personal data in the issue.
           </p>
           <h2 className="text-xl font-semibold text-gray-800">5. Data Security</h2>
           <p className="text-gray-600">
@@ -38,7 +38,7 @@ export default function PrivacyPolicy() {
           </p>
           <h2 className="text-xl font-semibold text-gray-800">6. Contact Us</h2>
           <p className="text-gray-600">
-            If you have any questions about this Privacy Policy or our data practices, please contact us at support@flagfinder.app.
+            For questions about this Privacy Policy or our data practices, open an issue at https://github.com/rodneyg/flag-finder/issues and ask for a private contact method. Do not include personal data in the issue.
           </p>
         </div>
       </div>
