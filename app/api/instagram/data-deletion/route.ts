@@ -5,8 +5,17 @@ import crypto from 'crypto';
 
 export async function POST(request: Request) {
   try {
-    // Get the request body
-    const { signed_request } = await request.json();
+    // Meta sends this callback as form data. JSON remains supported for existing callers.
+    const contentType = request.headers.get('content-type') || '';
+    let signed_request: string | null | undefined;
+    if (contentType.includes('application/x-www-form-urlencoded') || contentType.includes('multipart/form-data')) {
+      const formData = await request.formData();
+      const value = formData.get('signed_request');
+      signed_request = typeof value === 'string' ? value : undefined;
+    } else {
+      const body = await request.json();
+      signed_request = body?.signed_request;
+    }
 
     if (!signed_request) {
       return NextResponse.json({ error: 'Missing signed_request' }, { status: 400 });
@@ -60,9 +69,11 @@ export async function POST(request: Request) {
       await deleteDoc(doc.ref);
     }
 
-    // Respond with a confirmation URL
-    const confirmationUrl = `https://flag-finder-dyc9jffvo-rodneygs-projects.vercel.app/data-deletion-confirmation?user_id=${userId}`;
-    return NextResponse.json({ url: confirmationUrl }, { status: 200 });
+    // Respond with a confirmation URL on the same deployment that handled the request.
+    const confirmationCode = crypto.randomBytes(16).toString('hex');
+    const confirmationUrl = new URL('/data-deletion-confirmation', request.url);
+    confirmationUrl.searchParams.set('confirmation_code', confirmationCode);
+    return NextResponse.json({ url: confirmationUrl.toString(), confirmation_code: confirmationCode }, { status: 200 });
 
   } catch (error) {
     console.error('Error in data deletion callback:', error);
